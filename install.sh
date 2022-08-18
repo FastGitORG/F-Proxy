@@ -1,9 +1,4 @@
 #!/bin/bash
-ensureRoot
-setupRepository
-installWarp
-setupWarp
-startWarpProxy
 
 ensureRoot() {
     if [[ $(id -u) != 0 ]]; then
@@ -45,3 +40,9 @@ installGoSniProxy() {
 runGoSniProxy() {
 
 }
+
+ensureRoot
+setupRepository
+installWarp
+setupWarp
+startWarpProxy
