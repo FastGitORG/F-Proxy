@@ -35,10 +35,11 @@ installGoSniProxy() {
     #/usr/local/bin
     #wget -O /usr/local/bin/sniproxy
     #chmod +x /usr/local/bin/sniproxy
+    echo "x"
 }
 
 runGoSniProxy() {
-
+    echo "y"
 }
 
 ensureRoot
