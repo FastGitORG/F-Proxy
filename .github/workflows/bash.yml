@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run bash
-        run: bash *.sh
+        run: sudo bash *.sh
