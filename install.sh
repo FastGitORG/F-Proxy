@@ -9,6 +9,7 @@ ensureRoot() {
 }
 
 prepare() {
+    echo -e "\e[0;36m[APT] Preparing...\e[0m"
     apt-get update
     apt-get install lsb-release wget curl gnupg -y
     apt-key del 835b8acb
@@ -42,8 +43,10 @@ installAgent() {
     #/usr/local/bin
     mkdir -p /etc/f-proxy
     echo -e "\e[0;36m[AGENT] Downloading...\e[0m"
-    wget -O /usr/local/bin/f-proxy-agent https://github.com/FastGitORG/SNIProxyGo/releases/latest/download/proxy
+    wget -O /usr/local/bin/f-proxy-agent https://github.com/FastGitORG/F-Proxy-Agent/releases/latest/download/proxy
+    chmod +x /usr/local/bin/f-proxy-agent
     echo -e "\e[0;36m[AGENT] Installing service...\e[0m"
+    cp config.yaml /etc/f-proxy
     cp f-proxy.service /etc/systemd/system/
     systemctl daemon-reload
     systemctl enable f-proxy
