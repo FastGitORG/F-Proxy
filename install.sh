@@ -21,12 +21,12 @@ setupRepository() {
 
 installWarp() {
     apt-get install cloudflare-warp -y
-    systemclt enable warp-svc.sevice
+    systemctl enable warp-svc
 }
 
 startWarpService() {
     echo "[WARP] Start Service"
-    systemclt start warp-svc.sevice
+    systemctl start warp-svc
 }
 
 setupWarp() {
