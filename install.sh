@@ -2,6 +2,7 @@
 
 ensureRoot() {
     if [[ $(id -u) != 0 ]]; then
+        echo -e "\e[0;31m[PERMISSION] Root is requried\e[0m"
         log ERROR "Root is required."
         exit 1
     fi
@@ -20,12 +21,14 @@ setupRepository() {
 }
 
 installWarp() {
+    echo -e "\e[0;36m[APT] Installing warp...\e[0m"
     apt-get install cloudflare-warp -y
+    echo -e "\e[0;36m[WARP] Enable warp...\e[0m"
     systemctl enable warp-svc
 }
 
 startWarpService() {
-    echo "[WARP] Start Service"
+    echo -e "\e[0;36m[WARP] Starting warp...\e[0m"
     systemctl start warp-svc
 }
 
@@ -35,11 +38,11 @@ setupWarp() {
 
 startWarpProxy() {
     # default proxy is :40000
-    echo "[WARP] Set Mode"
+    echo -e "\e[0;36m[WARP] Setting Mode...\e[0m"
     warp-cli --accept-tos set-mode proxy
-    echo "[WARP] CONNECT"
+    echo -e "\e[0;36m[WARP] Connecting...\e[0m"
     warp-cli --accept-tos connect
-    echo "[WARP] ENABLE ALWAYS ON"
+    echo -e "\e[0;36m[WARP] Enable always on...\e[0m"
     warp-cli --accept-tos enable-always-on
 }
 
@@ -54,6 +57,7 @@ runGoSniProxy() {
     echo "y"
 }
 
+set -e # if failed exit
 ensureRoot
 setupDependency
 setupRepository
