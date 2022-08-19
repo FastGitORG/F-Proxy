@@ -3,13 +3,11 @@ name: Bash
 on:
   push:
     branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: debian-latest
+    runs-on: ubunty-latest
 
     steps:
       - uses: actions/checkout@v3
