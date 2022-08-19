@@ -1,0 +1,13 @@
+[Unit]
+Description=FastGit F-Proxy Agent
+After=pre-network.target warp-svc.service
+
+[Service]
+Type=simple
+WorkingDirectory=/etc/f-proxy
+ExecStart=/usr/local/bin/f-proxy-agent
+DynamicUser=no
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

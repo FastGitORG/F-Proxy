@@ -8,13 +8,10 @@ ensureRoot() {
     fi
 }
 
-setupDependency() {
+prepare() {
     apt-get update
     apt-get install lsb-release wget curl gnupg -y
     apt-key del 835b8acb
-}
-
-setupRepository() {
     curl https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/cloudflare-client.list
     apt-get update
@@ -25,20 +22,15 @@ installWarp() {
     apt-get install cloudflare-warp -y
     echo -e "\e[0;36m[WARP] Enable warp...\e[0m"
     systemctl enable warp-svc
-}
-
-startWarpService() {
     echo -e "\e[0;36m[WARP] Starting warp...\e[0m"
     systemctl start warp-svc
-}
-
-setupWarp() {
+    echo -e "\e[0;36m[WARP] Register device...\e[0m"
     warp-cli --accept-tos register
 }
 
-startWarpProxy() {
+initWarp() {
     # default proxy is :40000
-    echo -e "\e[0;36m[WARP] Setting Mode...\e[0m"
+    echo -e "\e[0;36m[WARP] Setting Proxy Mode...\e[0m"
     warp-cli --accept-tos set-mode proxy
     echo -e "\e[0;36m[WARP] Connecting...\e[0m"
     warp-cli --accept-tos connect
@@ -46,22 +38,24 @@ startWarpProxy() {
     warp-cli --accept-tos enable-always-on
 }
 
-installGoSniProxy() {
+installAgent() {
     #/usr/local/bin
-    #wget -O /usr/local/bin/sniproxy
-    #chmod +x /usr/local/bin/sniproxy
-    echo "x"
-}
-
-runGoSniProxy() {
-    echo "y"
+    mkdir -p /etc/f-proxy
+    echo -e "\e[0;36m[AGENT] Downloading...\e[0m"
+    wget -O /usr/local/bin/f-proxy-agent https://github.com/FastGitORG/SNIProxyGo/releases/latest/download/proxy
+    echo -e "\e[0;36m[AGENT] Installing service...\e[0m"
+    cp f-proxy.service /etc/systemd/system/
+    systemctl daemon-reload
+    systemctl enable f-proxy
+    echo -e "\e[0;36m[AGENT] Start service...\e[0m"
+    systemctl start f-proxy
 }
 
 set -e # if failed exit
 ensureRoot
-setupDependency
-setupRepository
+prepare
+
 installWarp
-startWarpService
-setupWarp
-startWarpProxy
+initWarp
+
+installAgent
