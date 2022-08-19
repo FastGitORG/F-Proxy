@@ -9,7 +9,8 @@ ensureRoot() {
 
 setupDependency() {
     apt-get update
-    apt-get install lsb-release wget curl -y
+    apt-get install lsb-release wget curl gnupg -y
+    apt-key del 835b8acb
 }
 
 setupRepository() {
