@@ -20,6 +20,12 @@ setupRepository() {
 
 installWarp() {
     apt-get install cloudflare-warp -y
+    systemclt enable warp-svc.sevice
+}
+
+startWarpService() {
+    echo "[WARP] Start Service"
+    systemclt start warp-svc.sevice
 }
 
 setupWarp() {
@@ -51,5 +57,6 @@ ensureRoot
 setupDependency
 setupRepository
 installWarp
+startWarpService
 setupWarp
 startWarpProxy
