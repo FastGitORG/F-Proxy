@@ -43,10 +43,12 @@ installAgent() {
     #/usr/local/bin
     mkdir -p /etc/f-proxy
     echo -e "\e[0;36m[AGENT] Downloading...\e[0m"
-    if service --status-all | grep -Fq 'f-proxy'; then    
-        systemctl stop f-proxy
+    if [ -f "/usr/local/bin/f-proxy-agent" ]; then
+        if service --status-all | grep -Fq 'f-proxy'; then    
+            systemctl stop f-proxy
+        fi
+        rm /usr/local/bin/f-proxy-agent
     fi
-    rm /usr/local/bin/f-proxy-agent
     wget -O /usr/local/bin/f-proxy-agent https://github.com/FastGitORG/F-Proxy-Agent/releases/latest/download/proxy
     chmod +x /usr/local/bin/f-proxy-agent
     echo -e "\e[0;36m[AGENT] Installing service...\e[0m"
